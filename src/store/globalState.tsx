@@ -1,22 +1,19 @@
 import { Dispatch, SetStateAction, createContext, useState } from 'react'
 import { networkError } from '../types/networkError'
-import { ethers } from 'ethers'
-
-// export const ErrorContext = createContext<{
-//     error: keyof typeof networkError
-//     setError: Dispatch<SetStateAction<keyof typeof networkError>>
-// }>({ error: networkError.PREPROCESS, setError: () => null })
+import { BrowserProvider, JsonRpcSigner } from 'ethers'
 
 export const EthProviderContext = createContext<{
+    signer: JsonRpcSigner | undefined
+    setSigner: Dispatch<SetStateAction<JsonRpcSigner | undefined>>
     error: keyof typeof networkError
     setError: Dispatch<SetStateAction<keyof typeof networkError>>
-    ethProvider: ethers.AbstractProvider | undefined
-    setEthProvider: Dispatch<
-        SetStateAction<ethers.AbstractProvider | undefined>
-    >
+    ethProvider: BrowserProvider | undefined
+    setEthProvider: Dispatch<SetStateAction<BrowserProvider | undefined>>
     wallet: string | undefined
     setWallet: Dispatch<SetStateAction<string | undefined>>
 }>({
+    signer: undefined,
+    setSigner: () => null,
     error: networkError.PREPROCESS,
     setError: () => null,
     ethProvider: undefined,
@@ -29,16 +26,19 @@ export function GlobalStateProvider(props: {
     children: React.ReactNode | null
 }) {
     const [wallet, setWallet] = useState<string | undefined>()
+    const [signer, setSigner] = useState<JsonRpcSigner | undefined>()
     const [error, setError] = useState<keyof typeof networkError>(
         networkError.PREPROCESS
     )
     const [ethProvider, setEthProvider] = useState<
-        ethers.AbstractProvider | undefined
+        BrowserProvider | undefined
     >()
 
     return (
         <EthProviderContext.Provider
             value={{
+                signer,
+                setSigner,
                 error,
                 setError,
                 ethProvider,

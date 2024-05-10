@@ -4,7 +4,7 @@ import { EthProviderContext } from '../store/globalState'
 import { networkError } from '../types/networkError'
 
 export const useNetwork = () => {
-    const { setError, setWallet, setEthProvider } =
+    const { setError, setWallet, setEthProvider, setSigner } =
         useContext(EthProviderContext)
     useEffect(() => {
         const initializeProvider = async () => {
@@ -12,9 +12,10 @@ export const useNetwork = () => {
                 if (!metamask.isMetamaskInstalled)
                     return setError(networkError.NEEDMETA)
 
-                const { wallet, provider } = await metamask.connect()
+                const { wallet, provider, signer } = await metamask.connect()
                 setWallet(wallet)
                 setEthProvider(provider)
+                setSigner(signer)
                 await metamask.switch()
 
                 return setError(networkError.NORMAL)

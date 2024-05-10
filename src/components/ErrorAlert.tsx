@@ -8,7 +8,7 @@ import { device } from '../lib/device'
 const METAMASK_DEEP_LINK = 'https://metamask.app.link/dapp'
 
 function NeedMetaError() {
-    const { setError, setWallet, setEthProvider } =
+    const { setError, setWallet, setEthProvider, setSigner } =
         useContext(EthProviderContext)
     const location = window.location.href
     const errorMessage = device.isMobile
@@ -19,9 +19,10 @@ function NeedMetaError() {
     const handleFocus = async () => {
         try {
             if (!metamask.isMetamaskInstalled) return
-            const { wallet, provider } = await metamask.connect()
+            const { wallet, provider, signer } = await metamask.connect()
             setWallet(wallet)
             setEthProvider(provider)
+            setSigner(signer)
             await metamask.switch()
         } catch (err) {
             return setError(networkError.NEEDMETA)

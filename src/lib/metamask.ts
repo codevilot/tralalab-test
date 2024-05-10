@@ -20,7 +20,8 @@ class Metamask {
                 method: 'eth_requestAccounts',
             })
             const provider = new ethers.BrowserProvider(window.ethereum)
-            return { wallet: wallet, provider: provider }
+            const signer = await provider?.getSigner()
+            return { wallet, provider, signer }
         } catch (err) {
             throw Error('metamask connect is failed')
         }
@@ -37,7 +38,6 @@ class Metamask {
     }
 
     public async switch(chainId?: string) {
-        return
         try {
             await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
@@ -53,6 +53,7 @@ class Metamask {
             }
         }
     }
+    public async send() {}
 }
 
 export const metamask = new Metamask()
