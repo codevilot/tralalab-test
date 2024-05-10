@@ -12,5 +12,10 @@ export function Assets() {
     useEffect(() => {
         updateBalance()
     }, [])
-    return <>{balance}</>
+    return (
+        <>
+            {balance}
+            <div>Send</div>
+        </>
+    )
 }
