@@ -1,15 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { ErrorAlert } from './components/ErrorAlert'
+import { GlobalStateProvider } from './store/globalState'
+// https://www.alchemy.com/overviews/how-to-add-sepolia-to-metamask
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <GlobalStateProvider>
+            <ErrorAlert />
+        </GlobalStateProvider>
+    )
 }
 
-export default App;
+export default App
