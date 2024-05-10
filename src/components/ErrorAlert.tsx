@@ -1,17 +1,22 @@
 import { useContext } from 'react'
 import { useListener } from '../hooks/useListener'
-import { ErrorContext } from '../store/globalState'
 import { networkError } from '../types/networkError'
-import { useNetwork } from '../hooks/useNetwork'
 import { metamask } from '../lib/metamask'
+import { EthProviderContext } from '../store/globalState'
 
 function NeedMetaError() {
-    const { setError } = useContext(ErrorContext)
+    const { setError, setWallet, setEthProvider } =
+        useContext(EthProviderContext)
     const handleFocus = async () => {
-        if (!metamask.isMetamaskInstalled) return
-        setError(networkError.PREPROCESS)
-        await metamask.connect()
-        await metamask.switch()
+        try {
+            if (!metamask.isMetamaskInstalled) return
+            const { wallet, provider } = await metamask.connect()
+            setWallet(wallet)
+            setEthProvider(provider)
+            await metamask.switch()
+        } catch (err) {
+            return setError(networkError.NEEDMETA)
+        }
     }
     useListener('focus', handleFocus)
     return (
@@ -32,8 +37,7 @@ function NeedMetaError() {
 }
 
 export function ErrorAlert() {
-    const { error } = useContext(ErrorContext)
-    useNetwork()
+    const { error } = useContext(EthProviderContext)
     if (error === networkError.NEEDMETA) return <NeedMetaError />
     return null
 }

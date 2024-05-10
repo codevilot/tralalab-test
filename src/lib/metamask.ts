@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { network } from './network'
 
 type metamaskError = {
@@ -12,13 +13,16 @@ class Metamask {
     public get isMetamaskInstalled() {
         return window.ethereum
     }
+
     public async connect() {
         try {
-            await window.ethereum.request({
+            const [wallet] = await window.ethereum.request({
                 method: 'eth_requestAccounts',
             })
+            const provider = new ethers.BrowserProvider(window.ethereum)
+            return { wallet: wallet, provider: provider }
         } catch (err) {
-            console.log(err)
+            throw Error('metamask connect is failed')
         }
     }
     public async addNetwork(chainId?: string) {
@@ -31,7 +35,9 @@ class Metamask {
             console.error(err)
         }
     }
+
     public async switch(chainId?: string) {
+        return
         try {
             await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
@@ -41,9 +47,9 @@ class Metamask {
             const err = e as metamaskError
             if (err.code === 4902) {
                 await this.addNetwork(chainId || DEFAULT_CHAIN_ID)
-                console.log('This network is not found in your network!')
+                throw Error('This network is not found in your network!')
             } else {
-                console.error('Failed to switch this network')
+                throw Error('Failed to switch this network')
             }
         }
     }

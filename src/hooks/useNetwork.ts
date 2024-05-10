@@ -1,19 +1,28 @@
 import { useContext, useEffect } from 'react'
 import { metamask } from '../lib/metamask'
-import { ErrorContext } from '../store/globalState'
+import { EthProviderContext } from '../store/globalState'
 import { networkError } from '../types/networkError'
 
 export const useNetwork = () => {
-    const { setError } = useContext(ErrorContext)
+    const { setError, setWallet, setEthProvider } =
+        useContext(EthProviderContext)
     useEffect(() => {
         const initializeProvider = async () => {
-            if (!metamask.isMetamaskInstalled) {
-                return setError(networkError.NEEDMETA)
+            try {
+                if (!metamask.isMetamaskInstalled)
+                    return setError(networkError.NEEDMETA)
+
+                const { wallet, provider } = await metamask.connect()
+                setWallet(wallet)
+                setEthProvider(provider)
+                await metamask.switch()
+
+                return setError(networkError.NORMAL)
+            } catch (err) {
+                console.log(err)
             }
-            await metamask.connect()
-            await metamask.switch()
         }
 
         initializeProvider()
-    }, [setError])
+    }, [setError, setWallet])
 }
