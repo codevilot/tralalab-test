@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+.balance_title,
+.send_title {
+    font-size: 1.2rem;
+}
+.balance_number {
+    font-size: 1rem;
+}
+
+.send_input {
+    display: block;
+    margin-top: 0.4rem;
+}
+.send_address_title {
+    font-size: 1.4rem;
+}
