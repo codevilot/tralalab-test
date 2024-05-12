@@ -1,4 +1,10 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react'
+import {
+    ChangeEvent,
+    KeyboardEvent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react'
 import { EthProviderContext } from '../store/globalState'
 import { Chip, Container, Input } from '@mui/material'
 import './Assets.css'
@@ -19,7 +25,10 @@ export function Assets() {
         setAddress(e.target.value)
     }
     const handleBalance = (e: ChangeEvent<HTMLInputElement>) => {
-        setSendBalnce(e.target.value.toString().replace(/[^0-9.]/g, ''))
+        setSendBalnce(e.target.value.toString().replace(/[^0-9.]|(\.)\1+/g, ''))
+    }
+    const handleRegex = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (sendBalnce.includes('.') && e.key === '.') e.preventDefault()
     }
     const handleSend = async () => {
         signer?.sendTransaction({
@@ -51,6 +60,8 @@ export function Assets() {
                     <Input
                         aria-label="Send balance"
                         placeholder="Type send balance"
+                        onKeyDown={handleRegex}
+                        onKeyUp={handleRegex}
                         onChange={handleBalance}
                         value={sendBalnce}
                         style={{ width: '100%' }}
