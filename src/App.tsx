@@ -1,4 +1,3 @@
-import { AppBar } from '@mui/material'
 import './App.css'
 import { Home } from './page/Home'
 import { GlobalStateProvider } from './store/globalState'
