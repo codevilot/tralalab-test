@@ -6,9 +6,10 @@ import {
     useState,
 } from 'react'
 import { EthProviderContext } from '../store/globalState'
-import { Chip, Container, Input } from '@mui/material'
+import { Chip, Input } from '@mui/material'
 import './Assets.css'
 import { ethers } from 'ethers'
+import { Wrapper } from '../components/Wrapper'
 
 const DEFAULT_ADD = '0xc7040F5c10823671CF5Aee64C8BBD4eAC6Bc8bA8'
 export function Assets() {
@@ -41,7 +42,7 @@ export function Assets() {
         updateBalance()
     }, [])
     return (
-        <Container maxWidth="xl" style={{ paddingTop: 20 }}>
+        <Wrapper>
             <div className="container">
                 <div className="balance_title">Current Balance</div>
                 <div className="balance_number">{balance}</div>
@@ -74,6 +75,6 @@ export function Assets() {
                     style={{ width: 100 }}
                 />
             </div>
-        </Container>
+        </Wrapper>
     )
 }

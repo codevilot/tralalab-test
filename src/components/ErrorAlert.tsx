@@ -4,14 +4,14 @@ import { networkError } from '../types/networkError'
 import { metamask } from '../lib/metamask'
 import { EthProviderContext } from '../store/globalState'
 import { device } from '../lib/device'
-
+import { Wrapper } from './Wrapper'
+import { ErrorTag } from './ErrorTag'
+import { Button } from '@mui/material'
 const METAMASK_DEEP_LINK = 'https://metamask.app.link/dapp'
 
-const ERROR_MESSAGE =
-    'NEED METAMASK:' +
-    (device.isMobile
-        ? 'You need to go Metamask browser'
-        : 'It seems MetaMask is not installed. Please click the link to install MetaMask.')
+const ERROR_MESSAGE = device.isMobile
+    ? 'You need to go Metamask browser'
+    : 'It seems MetaMask is not installed. Please click the link to install MetaMask.'
 function NeedMetaError() {
     const { setError, setWallet, setEthProvider, setSigner } =
         useContext(EthProviderContext)
@@ -32,10 +32,19 @@ function NeedMetaError() {
     }
     useListener('focus', handleFocus)
     return (
-        <div>
-            <div>{ERROR_MESSAGE}</div>
-            <div onClick={handleClick}>To Metamask</div>
-        </div>
+        <Wrapper>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <ErrorTag>NEED METAMASK:</ErrorTag>
+                {ERROR_MESSAGE}
+            </div>
+            <Button
+                variant="contained"
+                onClick={handleClick}
+                style={{ marginTop: 10 }}
+            >
+                To Metamask
+            </Button>
+        </Wrapper>
     )
 }
 
@@ -43,5 +52,5 @@ export function ErrorAlert() {
     const { error } = useContext(EthProviderContext)
     console.log(error)
     if (error === networkError.NEEDMETA) return <NeedMetaError />
-    return <>Check if there is a Metamask connection request</>
+    return <Wrapper>Check if there is a Metamask connection request</Wrapper>
 }
