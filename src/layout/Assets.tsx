@@ -8,18 +8,17 @@ import {
 import { EthProviderContext } from '../store/globalState'
 import { Button, Chip, Input } from '@mui/material'
 import './Assets.css'
-import { ethers, hexlify } from 'ethers'
+import { ethers } from 'ethers'
 import { Wrapper } from '../components/Wrapper'
 import { errorUtil } from '../lib/errorUtil'
 import { metamask } from '../lib/metamask'
 const INSUFFICIENT_BALANCE = 'insufficient balance for transfer'
-const DEFAULT_ADD = '0xc7040F5c10823671CF5Aee64C8BBD4eAC6Bc8bA8'
 const FAUCET_LINK = 'https://learnweb3.io/faucets/zksync_sepolia/'
 export function Assets() {
     const { wallet, ethProvider, signer } = useContext(EthProviderContext)
     const [balance, setBalance] = useState(0)
     const [sendBalnce, setSendBalnce] = useState('')
-    const [address, setAddress] = useState(DEFAULT_ADD)
+    const [address, setAddress] = useState('')
     const [insufficient, setInsufficient] = useState(false)
     const updateBalance = async () => {
         if (!wallet) return
