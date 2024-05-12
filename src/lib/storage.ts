@@ -15,7 +15,6 @@ class Storage {
         return this.get(stroageKey.PROFILE) || ''
     }
     public setProfile(data: string) {
-        console.log(data)
         return this.set(stroageKey.PROFILE, data)
     }
 }

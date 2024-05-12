@@ -50,7 +50,6 @@ function NeedMetaError() {
 
 export function ErrorAlert() {
     const { error } = useContext(EthProviderContext)
-    console.log(error)
     if (error === networkError.NEEDMETA) return <NeedMetaError />
     return <Wrapper>Check if there is a Metamask connection request</Wrapper>
 }
