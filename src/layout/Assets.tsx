@@ -65,6 +65,7 @@ export function Assets() {
                         onChange={handleBalance}
                         value={sendBalnce}
                         style={{ width: '100%' }}
+                        data-testid="send-balance"
                     />
                 </div>
                 <Chip
