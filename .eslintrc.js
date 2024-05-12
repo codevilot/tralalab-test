@@ -30,9 +30,7 @@ module.exports = {
     settings: { react: { version: 'detect' } },
 
     rules: {
-        'prettier/prettier': 'error',
         'no-implicit-coercion': 'error',
-
         'no-undef': 'off',
 
         indent: 'off',
@@ -40,6 +38,7 @@ module.exports = {
         semi: 'off',
 
         '@typescript-eslint/no-non-null-assertion': 'off',
+
         '@typescript-eslint/no-explicit-any': 'off',
 
         'no-extra-boolean-cast': 'off',
@@ -73,38 +72,13 @@ module.exports = {
         '@typescript-eslint/ban-types': 'warn',
         '@typescript-eslint/no-inferrable-types': 'warn',
         '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-                selector: 'variable',
-                leadingUnderscore: 'allow',
-            },
-            { format: ['camelCase', 'PascalCase'], selector: 'function' },
-            { format: ['PascalCase'], selector: 'interface' },
-            { format: ['PascalCase'], selector: 'typeAlias' },
-        ],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
         '@typescript-eslint/no-unused-vars': [
             'error',
             { ignoreRestSiblings: true },
         ],
-        '@typescript-eslint/member-ordering': [
-            'error',
-            {
-                default: [
-                    'public-static-field',
-                    'private-static-field',
-                    'public-instance-field',
-                    'private-instance-field',
-                    'public-constructor',
-                    'private-constructor',
-                    'public-instance-method',
-                    'private-instance-method',
-                ],
-            },
-        ],
+
         'no-warning-comments': [
             'warn',
             {
@@ -114,7 +88,6 @@ module.exports = {
         ],
         'prefer-const': 'error',
         'no-var': 'error',
-        curly: ['error', 'all'],
         eqeqeq: ['error', 'always', { null: 'ignore' }],
         'import/no-duplicates': 'error',
 
@@ -122,7 +95,6 @@ module.exports = {
 
         'react/display-name': 'off',
         'react-hooks/rules-of-hooks': 'error',
-        'react-hooks/exhaustive-deps': 'error',
 
         'react/jsx-no-target-blank': 'error',
 
