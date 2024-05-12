@@ -26,6 +26,9 @@ class Metamask {
             throw Error('metamask connect is failed')
         }
     }
+    public isAddress(address: string) {
+        return ethers.isAddress(address)
+    }
     public async addNetwork(chainId?: string) {
         try {
             await window.ethereum.request({

@@ -6,17 +6,21 @@ import {
     useState,
 } from 'react'
 import { EthProviderContext } from '../store/globalState'
-import { Chip, Input } from '@mui/material'
+import { Button, Chip, Input } from '@mui/material'
 import './Assets.css'
-import { ethers } from 'ethers'
+import { ethers, hexlify } from 'ethers'
 import { Wrapper } from '../components/Wrapper'
-
+import { errorUtil } from '../lib/errorUtil'
+import { metamask } from '../lib/metamask'
+const INSUFFICIENT_BALANCE = 'insufficient balance for transfer'
 const DEFAULT_ADD = '0xc7040F5c10823671CF5Aee64C8BBD4eAC6Bc8bA8'
+const FAUCET_LINK = 'https://learnweb3.io/faucets/zksync_sepolia/'
 export function Assets() {
     const { wallet, ethProvider, signer } = useContext(EthProviderContext)
     const [balance, setBalance] = useState(0)
     const [sendBalnce, setSendBalnce] = useState('')
     const [address, setAddress] = useState(DEFAULT_ADD)
+    const [insufficient, setInsufficient] = useState(false)
     const updateBalance = async () => {
         if (!wallet) return
         const balance = await ethProvider?.getBalance(wallet)
@@ -30,13 +34,32 @@ export function Assets() {
     }
     const handleRegex = (e: KeyboardEvent<HTMLInputElement>) => {
         if (sendBalnce.includes('.') && e.key === '.') e.preventDefault()
+        else setInsufficient(false)
     }
+    const handleClick = () => window.open(FAUCET_LINK, '_blank')
+    const sendDisabled =
+        Number(sendBalnce) === 0 || !metamask.isAddress(address)
     const handleSend = async () => {
-        signer?.sendTransaction({
-            to: address,
-            value: ethers.parseEther(sendBalnce),
-            gasLimit: 1,
-        })
+        if (sendDisabled) return
+        try {
+            const value = ethers.parseEther(sendBalnce)
+            const estimatedGas = await signer?.estimateGas({
+                to: address,
+                value: ethers.parseEther(sendBalnce),
+            })
+            if (!estimatedGas) return
+            return await signer?.sendTransaction({
+                to: address,
+                value: value,
+                gasLimit: estimatedGas,
+            })
+        } catch (err) {
+            const { error } = errorUtil.get(err)
+            if (error.data.message === INSUFFICIENT_BALANCE) {
+                setInsufficient(true)
+                console.log('haha')
+            }
+        }
     }
     useEffect(() => {
         updateBalance()
@@ -68,9 +91,16 @@ export function Assets() {
                         style={{ width: '100%' }}
                         data-testid="send-balance"
                     />
+                    {insufficient && (
+                        <Button onClick={handleClick}>
+                            Insufficient balance. Please refill at the faucet.
+                        </Button>
+                    )}
                 </div>
                 <Chip
+                    disabled={sendDisabled}
                     label="Send"
+                    color="primary"
                     onClick={handleSend}
                     style={{ width: 100 }}
                 />
