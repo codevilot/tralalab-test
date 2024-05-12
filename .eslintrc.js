@@ -73,11 +73,6 @@ module.exports = {
         '@typescript-eslint/no-inferrable-types': 'warn',
         '@typescript-eslint/no-empty-function': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-        '@typescript-eslint/no-unused-vars': [
-            'error',
-            { ignoreRestSiblings: true },
-        ],
 
         'no-warning-comments': [
             'warn',
