@@ -7,7 +7,6 @@ import { Assets } from '../layout/Assets'
 
 export function Home() {
     const { error } = useContext(EthProviderContext)
-    console.log(error)
     useNetwork()
     if (error !== networkError.NORMAL) return <ErrorAlert />
     return <Assets />
