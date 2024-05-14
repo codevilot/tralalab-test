@@ -12,6 +12,7 @@ import { ethers } from 'ethers'
 import { Wrapper } from '../components/Wrapper'
 import { errorUtil } from '../lib/errorUtil'
 import { metamask } from '../lib/metamask'
+import { useListener } from '../hooks/useListener'
 const INSUFFICIENT_BALANCE = 'insufficient balance for transfer'
 const FAUCET_LINK = 'https://learnweb3.io/faucets/zksync_sepolia/'
 export function Assets() {
@@ -37,7 +38,7 @@ export function Assets() {
     }
     const handleClick = () => window.open(FAUCET_LINK, '_blank')
     const sendDisabled =
-        Number(sendBalnce) === 0 || !metamask.isAddress(address)
+        Number(sendBalnce) === 0 || !metamask.isAddress(address) || insufficient
     const handleSend = async () => {
         if (sendDisabled) return
         try {
@@ -54,12 +55,12 @@ export function Assets() {
             })
         } catch (err) {
             const { error } = errorUtil.get(err)
-            if (error.data.message === INSUFFICIENT_BALANCE) {
+            if (error?.data?.message === INSUFFICIENT_BALANCE) {
                 setInsufficient(true)
-                console.log('haha')
             }
         }
     }
+    useListener('keyup', handleSend)
     useEffect(() => {
         updateBalance()
     }, [])

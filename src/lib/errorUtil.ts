@@ -15,7 +15,6 @@ export type Response = {
         jsonrpc: string
     }
 }
-const INSUFFICIENT_BALANCE = 'insufficient balance for transfer'
 
 class ErrorUtil {
     public get(error: unknown) {
