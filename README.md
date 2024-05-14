@@ -1,46 +1,52 @@
-# Getting Started with Create React App
+# Trala lab
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How to run
+```
+yarn start
+```
 
-## Available Scripts
+## How to test 
+```
+yarn test
+```
 
-In the project directory, you can run:
+테스트 파일은 App.spec.tsx, Assets.spec.tsx 두 가지가 있습니다
 
-### `npm start`
+## App.spec.tsx
+메타 마스크로 설치에 따라 뷰가 제대로 나오는지 확인합니다.
+```mermaid
+graph LR
+유저-->모바일
+유저-->데스크탑
+모바일-->메타마스크-딥링크
+데스크탑-->메타마스크-미설치-->메타마스크-설치링크
+```
+## Assets.spec.tsx
+보낼 Balance의 input에 자연수 혹은 소숫점이 들어가는지 확인합니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Web-flow
+1. Assets 
+```mermaid
+graph LR
+유저-->모바일
+유저-->데스크탑
+모바일-->메타마스크-딥링크
+데스크탑-->메타마스크-미설치-->메타마스크-설치링크
+데스크탑-->메타마스크-설치-->Assets
+```
+2. Send
+```mermaid
+graph LR
+Assets-->지갑주소-확인-->에러-->Send비활성
+Assets-->보유량-확인-->에러-->Send비활성
+Address-regex-지갑주소-확인-->지갑-OK-->보유량-확인-->보유량-OK-->Send활성화
+```
+3. Profile
+```mermaid
+graph LR
+Profile-->저장된-이미지-없는-경우-->기본-이미지
+기본-이미지-->클릭-->이미지-선택-->이미지-저장
+Profile-->저장된-이미지-있는-경우-->클릭
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
